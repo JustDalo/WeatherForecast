@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function WeatherForecast(props) {
     return (
-        <div>
+        <div className="weather__forecast">
             <div className="weatherForecast__day">{props.ForecastInfo}</div>
             <div className="weatherForecast__info">
                 <div className="weatherForecast__icon"></div>

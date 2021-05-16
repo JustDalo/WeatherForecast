@@ -5,11 +5,13 @@
     font-weight: 700;
     display: flex;
     flex-wrap: wrap;
+    
 }
 
 .button__cluster__left {
     display: flex;
-    position: absolute;
+    position: relative;
+    width: 50%;
     top: 0;
     left: 0;
     
@@ -151,16 +153,14 @@ button {
 }
 
 .button__cluster__right {
-    position: relative;
-    top: 0;
-    right: 0;
+    width: 50%;
+    
     display: flex;
+    flex-wrap: wrap;
 }
 
 .search__form {
-    position: absolute;
-    top: 0;
-    right: 0;
+    
     display: flex;
 }
 
@@ -207,3 +207,60 @@ button {
 #button__search:hover {
     background-color: #000;
 }
+
+.date {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.currWeather {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    flex-wrap: wrap;
+}
+
+.temprature {
+    width: 45%;
+    font-weight: 700;
+    font-size: 300px;
+}
+
+.weather_atributes {
+    width: 55%;
+    display: flex;
+    font-size: 100px;
+}
+
+.weather__section {
+    width: 60%;
+}
+
+.weather__Forecast__section {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 40px;
+    width: 60%;
+    justify-content: space-between;
+}
+
+.weather__forecast {
+   
+}
+
+.weather__forecast:first-child {
+    margin-left: 200px;
+}
+
+.weather__forecast:last-child {
+    margin-right: 200px;
+}
+
+
+
+
+
+

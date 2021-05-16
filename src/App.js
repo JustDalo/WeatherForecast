@@ -65,10 +65,11 @@ class App extends React.PureComponent {
           city: data.city,
           timezone: data.timezone,
         });
+
+
         if (localStorage.getItem('degress') != null) {
           degrees = localStorage.getItem('degress');
         }
-
         if (localStorage.getItem('language') != null) {
           language = localStorage.getItem('language');
         }
@@ -116,7 +117,7 @@ class App extends React.PureComponent {
           .then(response => response.json())
           .then(data => {
             let dayname = data.daily[0].dt;
-            let day = new Date(dayname);
+            let day = new Date(dayname * 1000);
             console.log(day);
             this.setState({
               firstForecastTemp: data.daily[0].temp.day.toFixed(0),
@@ -157,20 +158,22 @@ class App extends React.PureComponent {
   GetWeatherForecast = () => {
     fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=38.7267&lon=-9.1403&exclude=current,hourly,minutely,alerts&units=metric&appid=a22a0229c938f98549e173a33c5ee9cc`)
       .then(function (response) {
-        response.json()
-          .then(function (data) {
-            data.daily.forEach((value, index) => {
-              if (index > 0) {
-                let dayname = new Date(value.dt * 1000).toLocaleDateString("en", {
-                  weekday: "long",
-                });
-                let temp = value.temp.day.toFixed(0);
-                console.log(dayname, temp, value.weather[0].description);
-              }
-            })
-            console.log("loop");
-          })
-          .catch(error => console.log(error))
+
+
+
+
+        response.json().then(function (data) {
+          var fday = "";
+          data.daily.forEach((value, index) => {
+            if (index > 0) {
+              var dayname = new Date(value.dt / 1000)
+              var icon = value.weather[0].icon;
+              var temp = value.temp.day.toFixed(0);
+              console.log(dayname);
+
+            }
+          });
+        });
       })
   }
 
@@ -178,7 +181,6 @@ class App extends React.PureComponent {
 
   GettingWeather = (e) => {
     e.preventDefault();
-    { this.GetDate() };
     let degrees = 'metric';
     let language = 'en';
     if (localStorage.getItem('degress') != null) {
@@ -234,13 +236,15 @@ class App extends React.PureComponent {
   render() {
     return (
       <div>
-
-        <div className="button__cluster__left">
-          <BackGroundImage ImageMethod={this.GetNewImage} />
-          <Degrees />
-        </div>
-        <div className="button__cluster__right">
-          <Search GetCity={this.GettingWeather} />
+        {this.GetWeatherForecast()}
+        <div className="button__cluster">
+          <div className="button__cluster__left">
+            <BackGroundImage ImageMethod={this.GetNewImage} />
+            <Degrees />
+          </div>
+          <div className="button__cluster__right">
+            <Search GetCity={this.GettingWeather} />
+          </div>
         </div>
         <div className="weather__section">
           <Date
@@ -257,12 +261,15 @@ class App extends React.PureComponent {
             wind={this.state.wind}
             humidity={this.state.humidity}
           />
+
         </div>
-        <div className="weatherForecast">
+
+        <div className="weather__Forecast__section">
           <WeatherForecast ForecastInfo={this.state.firstForecastTemp} />
           <WeatherForecast ForecastInfo={this.state.secondForecastTemp} />
           <WeatherForecast ForecastInfo={this.state.thirdForecastTemp} />
         </div>
+
         <div ref={this.mapContainer} className="mapContainer" />
 
       </div>
