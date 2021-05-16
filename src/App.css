@@ -1,38 +1,209 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+.button__cluster {
+	font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.button__cluster__left {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+button {
+    width: 50px;
+    height: 50px;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    border-radius: .5rem;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    background-color: rgba(180, 184, 187, .7);
+    text-transform: uppercase;
+
+    -webkit-appearance: button;
+
+    -webkit-transition: all .2s;
+    transition: all 1s;
+
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+
+    overflow: visible;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.button__new__image {
+    background: rgba(180, 184, 187, .7) url(img/update-button.svg) no-repeat bottom;
+    margin-right: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+.button__new__image:hover {
+    background-color: #000;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.spinner {
+    width: 25px;
+    height: 25px;
+    background: url(img/spinner.svg) 50% no-repeat;
+
+}
+
+.spinner:hover {
+    animation: spinner 1.4s ease-in-out;
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+.button__language__manu {
+    margin-right: 20px;
+    position: relative;
+    display: inline-block;
+}
+
+.button__drop__menu {
+    color: white;
+    padding: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.language__arrow {
+    background: url(img/arrow-down.svg) 50% no-repeat;
+}
+
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+
+    overflow: auto;
+    
+    border-radius: 0px;
+    right: 0;
+    z-index: 1;
+}
+
+.button__language {
+    border-radius: 0px;
+}
+
+.button__language:last-child {
+    border-bottom-left-radius: .5rem;
+    border-bottom-right-radius: .5rem;
+}
+
+.dropdown-content a {
+    color: black;
+    
+    text-decoration: none;
+    display: block;
+}
+
+.button__language__manu a:hover {background-color: #ddd;}
+
+.show {
+    display: block;
+}
+
+.degrees__buttons {
+    display: flex;
+
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+.button__F {
+    font-size: 15px;
+
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;  
+}
+
+.button__C {
+    font-size: 15px;
+
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;  
+}
+
+.button__C:hover {
+    background-color: #000;
+}
+
+.button__F:hover {
+    background-color: #000;
+}
+
+.button__cluster__right {
+    position: relative;
+    top: 0;
+    right: 0;
+    display: flex;
+}
+
+.search__form {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+}
+
+.input__search {
+    background: rgba(76, 82, 85, .7);
+    border: .1rem solid rgba(180, 184, 197, .7);
+    border-radius: .5rem;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px; 
+
+    border-right: 0px;
+
+    padding: 0 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    color: #fff;
+
+    outline: none;
+}
+
+.input__search::-webkit-input-placeholder {
+    color: #fff;
+}
+
+#button__micro {
+    border-top: .1rem solid rgba(180, 184, 197, .7);
+    border-bottom: .1rem solid rgba(180, 184, 197, .7);
+    background: rgba(76, 82, 85, .7) url(img/microphone.svg) no-repeat center;
+    border-radius: 0px;
+}
+
+#button__search {
+    width: 9rem;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;  
+}
+
+#button__micro:hover {
+    background: #000 url(img/microphone.svg) no-repeat center;
+}
+
+
+#button__search:hover {
+    background-color: #000;
 }
