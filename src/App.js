@@ -31,7 +31,7 @@ class App extends React.PureComponent {
       city: undefined,
       lat: undefined,
       lon: undefined,
-      zoom: 9,
+      zoom: 30,
 
       timezone: undefined,
       time: undefined,
@@ -95,52 +95,44 @@ class App extends React.PureComponent {
             lat = this.state.lat;
             lon = this.state.lon;
 
-            fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.state.lat}&lon=${this.state.lon}&exclude=current,hourly,minutely,alerts&units=metric&appid=a22a0229c938f98549e173a33c5ee9cc`)
+            fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.state.lat}&lon=${this.state.lon}&exclude=current,hourly,minutely,alerts&units=${degrees}&appid=a22a0229c938f98549e173a33c5ee9cc`)
               .then(response => response.json())
               .then(data => {
                 this.setState({
-                  firstForecastTemp: data.daily[0].temp.day.toFixed(0),
-                  secondForecastTemp: data.daily[1].temp.day.toFixed(0),
-                  thirdForecastTemp: data.daily[2].temp.day.toFixed(0),
-                  firstForecastDay: new Date(data.daily[0].dt * 1000).toLocaleString("en-us", {
+                  firstForecastTemp: data.daily[1].temp.day.toFixed(0),
+                  secondForecastTemp: data.daily[2].temp.day.toFixed(0),
+                  thirdForecastTemp: data.daily[3].temp.day.toFixed(0),
+                  firstForecastDay: new Date(data.daily[1].dt * 1000).toLocaleString("en-us", {
                     weekday: "long"
                   }),
-                  secondForecastDay: new Date(data.daily[1].dt * 1000).toLocaleString("en-us", {
+                  secondForecastDay: new Date(data.daily[2].dt * 1000).toLocaleString("en-us", {
                     weekday: "long"
                   }),
-                  thirdForecastDay: new Date(data.daily[2].dt * 1000).toLocaleString("en-us", {
+                  thirdForecastDay: new Date(data.daily[3].dt * 1000).toLocaleString("en-us", {
                     weekday: "long"
                   }),
-                  firstForecastIcon: "http://openweathermap.org/img/w/" + data.daily[0].weather[0].icon + ".png",
-                  secondForecastIcon: "http://openweathermap.org/img/w/" + data.daily[1].weather[0].icon + ".png",
-                  thirdForecastIcon: "http://openweathermap.org/img/w/" + data.daily[2].weather[0].icon + ".png",
+                  firstForecastIcon: "http://openweathermap.org/img/w/" + data.daily[1].weather[0].icon + ".png",
+                  secondForecastIcon: "http://openweathermap.org/img/w/" + data.daily[2].weather[0].icon + ".png",
+                  thirdForecastIcon: "http://openweathermap.org/img/w/" + data.daily[3].weather[0].icon + ".png",
 
                 })
               })
 
             { this.GetNewImage() }
-            /*const map = new mapboxgl.Map({
+            const map = new mapboxgl.Map({
               container: this.mapContainer.current,
-              style: 'mapbox://styles/mapbox/streets-v9',
-              center: [lon, lat],
+              style: 'mapbox://styles/mapbox/streets-v8',
+              center: [this.state.lon, this.state.lat],
               zoom: 8
             });
 
-            map.on('move', () => {
-              const { lon, lat } = map.getCenter();
 
-              this.setState({
-                lon: lon.toFixed(4),
-                lat: lat.toFixed(4),
-                zoom: map.getZoom().toFixed(2)
-              });
-            });*/
 
           })
 
 
 
-          {this.GetDate()};
+        { this.GetDate() };
 
 
       });
@@ -256,43 +248,51 @@ class App extends React.PureComponent {
             <Search GetCity={this.GettingWeather} />
           </div>
         </div>
-        <div className="weather__section">
-          <CurrDate
-            country={this.state.country}
-            city={this.state.city}
-            time={this.state.time}
-            day={this.state.day}
-            month={this.state.month}
-          />
-          <CurrWeather
-            temp={this.state.temp}
-            description={this.state.weatherDescription}
-            feelsLike={this.state.feelsLike}
-            wind={this.state.wind}
-            humidity={this.state.humidity}
-          />
+        <div className="main">
+          <div className="weather">
+            <div className="weather__section">
+              <CurrDate
+                country={this.state.country}
+                city={this.state.city}
+                time={this.state.time}
+                day={this.state.day}
+                month={this.state.month}
+              />
+              <CurrWeather
+                temp={this.state.temp}
+                description={this.state.weatherDescription}
+                feelsLike={this.state.feelsLike}
+                wind={this.state.wind}
+                humidity={this.state.humidity}
+              />
 
+            </div>
+            <div className="weather__Forecast__section">
+              <WeatherForecast
+                ForecastTemp={this.state.firstForecastTemp}
+                ForecastDay={this.state.firstForecastDay}
+                ForecastIcon={this.state.firstForecastIcon}
+              />
+              <WeatherForecast
+                ForecastTemp={this.state.secondForecastTemp}
+                ForecastDay={this.state.secondForecastDay}
+                ForecastIcon={this.state.secondForecastIcon}
+              />
+              <WeatherForecast
+                ForecastTemp={this.state.thirdForecastTemp}
+                ForecastDay={this.state.thirdForecastDay}
+                ForecastIcon={this.state.thirdForecastIcon}
+              />
+            </div>
+          </div>
+
+          <div className="map__container">
+            <div ref={this.mapContainer} className="map" />
+          </div>
         </div>
 
-        <div className="weather__Forecast__section">
-          <WeatherForecast
-            ForecastTemp={this.state.firstForecastTemp}
-            ForecastDay={this.state.firstForecastDay}
-            ForecastIcon={this.state.firstForecastIcon}
-          />
-          <WeatherForecast
-            ForecastTemp={this.state.secondForecastTemp}
-            ForecastDay={this.state.secondForecastDay}
-            ForecastIcon={this.state.secondForecastIcon}
-          />
-          <WeatherForecast
-            ForecastTemp={this.state.thirdForecastTemp}
-            ForecastDay={this.state.thirdForecastDay}
-            ForecastIcon={this.state.thirdForecastIcon}
-          />
-        </div>
 
-        <div ref={this.mapContainer} className="mapContainer" />
+
 
       </div>
     );

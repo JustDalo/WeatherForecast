@@ -7,7 +7,6 @@
     flex-wrap: wrap;
 
     margin-bottom: 30px;
-    
 }
 
 .button__cluster__left {
@@ -244,26 +243,28 @@ button {
 }
 
 .weather__section {
-    width: 60%;
+    
 }
 
 .weather__Forecast__section {
     display: flex;
     flex-wrap: wrap;
     font-size: 40px;
-    width: 60%;
+  
     justify-content: space-between;
 }
 
 .weather__forecast {
     font-family: 'Montserrat', sans-serif;
+    margin-left: 50px;
 }
 
 .weatherForecast__day {
     
+    
 }
 .weather__forecast:first-child {
-    margin-left: 50px;
+    
 }
 
 .weather__forecast:last-child {
@@ -280,6 +281,29 @@ button {
     font-weight: 700;
 }
 
+
+.main {
+    display: flex;
+    
+}
+
+.weather {
+    width: 60%;
+    
+}
+
+.map__container {
+    width: 40%; 
+    border: 2px solid #000; 
+    margin: 120px 80px;
+    border-radius: 10px;
+}
+
+.map {
+    border-radius: 10px;
+    width: 100%;
+    height:100%;
+}
 
 
 
