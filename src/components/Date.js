@@ -45,7 +45,7 @@ export default function Date(props) {
     return (
         <div className="date">
             <div className="cityCountry">{props.city}, {countryIndex[props.country]}</div>
-            <div className="time">{props.time}{props.day}{props.month}</div>
+            <div className="time">{props.month} {props.day} {props.time}</div>
         </div>
     )
 }

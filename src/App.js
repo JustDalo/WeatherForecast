@@ -4,7 +4,7 @@ import BackGroundImage from "./components/backGroundImage";
 import Search from "./components/search";
 import Degrees from "./components/Degrees";
 import CurrWeather from "./components/CurrWeather";
-import Date from "./components/Date";
+import CurrDate from "./components/Date";
 import Map from "./components/Map";
 import WeatherForecast from "./components/WeatherForecast";
 
@@ -41,10 +41,12 @@ class App extends React.PureComponent {
       firstForecastTemp: undefined,
       secondForecastTemp: undefined,
       thirdForecastTemp: undefined,
-
       firstForecastDay: undefined,
       secondForecastDay: undefined,
       thirdForecastDay: undefined,
+      firstForecastIcon: undefined,
+      secondForecastIcon: undefined,
+      thirdForecastIcon: undefined,
     };
     this.mapContainer = React.createRef();
   }
@@ -93,6 +95,29 @@ class App extends React.PureComponent {
             lat = this.state.lat;
             lon = this.state.lon;
 
+            fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.state.lat}&lon=${this.state.lon}&exclude=current,hourly,minutely,alerts&units=metric&appid=a22a0229c938f98549e173a33c5ee9cc`)
+              .then(response => response.json())
+              .then(data => {
+                this.setState({
+                  firstForecastTemp: data.daily[0].temp.day.toFixed(0),
+                  secondForecastTemp: data.daily[1].temp.day.toFixed(0),
+                  thirdForecastTemp: data.daily[2].temp.day.toFixed(0),
+                  firstForecastDay: new Date(data.daily[0].dt * 1000).toLocaleString("en-us", {
+                    weekday: "long"
+                  }),
+                  secondForecastDay: new Date(data.daily[1].dt * 1000).toLocaleString("en-us", {
+                    weekday: "long"
+                  }),
+                  thirdForecastDay: new Date(data.daily[2].dt * 1000).toLocaleString("en-us", {
+                    weekday: "long"
+                  }),
+                  firstForecastIcon: "http://openweathermap.org/img/w/" + data.daily[0].weather[0].icon + ".png",
+                  secondForecastIcon: "http://openweathermap.org/img/w/" + data.daily[1].weather[0].icon + ".png",
+                  thirdForecastIcon: "http://openweathermap.org/img/w/" + data.daily[2].weather[0].icon + ".png",
+
+                })
+              })
+
             { this.GetNewImage() }
             /*const map = new mapboxgl.Map({
               container: this.mapContainer.current,
@@ -113,20 +138,9 @@ class App extends React.PureComponent {
 
           })
 
-        fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=38.7267&lon=-9.1403&exclude=current,hourly,minutely,alerts&units=metric&appid=a22a0229c938f98549e173a33c5ee9cc`)
-          .then(response => response.json())
-          .then(data => {
-            let dayname = data.daily[0].dt;
-            let day = new Date(dayname * 1000);
-            console.log(day);
-            this.setState({
-              firstForecastTemp: data.daily[0].temp.day.toFixed(0),
-              secondForecastTemp: data.daily[1].temp.day.toFixed(0),
-              thirdForecastTemp: data.daily[2].temp.day.toFixed(0),
-            })
-          })
 
 
+          {this.GetDate()};
 
 
       });
@@ -158,10 +172,6 @@ class App extends React.PureComponent {
   GetWeatherForecast = () => {
     fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=38.7267&lon=-9.1403&exclude=current,hourly,minutely,alerts&units=metric&appid=a22a0229c938f98549e173a33c5ee9cc`)
       .then(function (response) {
-
-
-
-
         response.json().then(function (data) {
           var fday = "";
           data.daily.forEach((value, index) => {
@@ -169,7 +179,7 @@ class App extends React.PureComponent {
               var dayname = new Date(value.dt / 1000)
               var icon = value.weather[0].icon;
               var temp = value.temp.day.toFixed(0);
-              console.log(dayname);
+
 
             }
           });
@@ -198,7 +208,7 @@ class App extends React.PureComponent {
         Icon.className = 'weather--icon owf';
         Icon.classList.add(`owf-${data.weather[0].id}`);
 
-        let csc = require('country-state-city');
+
         let newTimezone = data.timezone;
 
         let moment = require('moment-timezone');
@@ -247,7 +257,7 @@ class App extends React.PureComponent {
           </div>
         </div>
         <div className="weather__section">
-          <Date
+          <CurrDate
             country={this.state.country}
             city={this.state.city}
             time={this.state.time}
@@ -265,9 +275,21 @@ class App extends React.PureComponent {
         </div>
 
         <div className="weather__Forecast__section">
-          <WeatherForecast ForecastInfo={this.state.firstForecastTemp} />
-          <WeatherForecast ForecastInfo={this.state.secondForecastTemp} />
-          <WeatherForecast ForecastInfo={this.state.thirdForecastTemp} />
+          <WeatherForecast
+            ForecastTemp={this.state.firstForecastTemp}
+            ForecastDay={this.state.firstForecastDay}
+            ForecastIcon={this.state.firstForecastIcon}
+          />
+          <WeatherForecast
+            ForecastTemp={this.state.secondForecastTemp}
+            ForecastDay={this.state.secondForecastDay}
+            ForecastIcon={this.state.secondForecastIcon}
+          />
+          <WeatherForecast
+            ForecastTemp={this.state.thirdForecastTemp}
+            ForecastDay={this.state.thirdForecastDay}
+            ForecastIcon={this.state.thirdForecastIcon}
+          />
         </div>
 
         <div ref={this.mapContainer} className="mapContainer" />

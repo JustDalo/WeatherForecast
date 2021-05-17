@@ -5,6 +5,8 @@
     font-weight: 700;
     display: flex;
     flex-wrap: wrap;
+
+    margin-bottom: 30px;
     
 }
 
@@ -214,6 +216,11 @@ button {
     font-weight: 700;
 }
 
+.time {
+    font-size: 30px;
+    font-weight: 400;
+}
+
 .currWeather {
     font-family: 'Montserrat', sans-serif;
     font-size: 40px;
@@ -221,6 +228,7 @@ button {
     align-items: center;
     margin-left: 30px;
     flex-wrap: wrap;
+    margin-bottom: 100px;
 }
 
 .temprature {
@@ -248,17 +256,29 @@ button {
 }
 
 .weather__forecast {
-   
+    font-family: 'Montserrat', sans-serif;
 }
 
+.weatherForecast__day {
+    
+}
 .weather__forecast:first-child {
-    margin-left: 200px;
+    margin-left: 50px;
 }
 
 .weather__forecast:last-child {
-    margin-right: 200px;
+    margin-right: 50px;
 }
 
+.weatherForecast__info {
+    display: flex;
+    justify-content: center;
+}
+
+.weatherForecast__temp {
+    font-size: 50px;
+    font-weight: 700;
+}
 
 
 
