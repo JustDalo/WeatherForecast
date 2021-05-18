@@ -1,19 +1,21 @@
 import React from "react";
 
 import BackGroundImage from "./components/backGroundImage";
-import Search from "./components/search";
-import Degrees from "./components/Degrees";
+
 import CurrWeather from "./components/CurrWeather";
 import CurrDate from "./components/Date";
-import Map from "./components/Map";
 import WeatherForecast from "./components/WeatherForecast";
+import { City, VoiceSearch } from "./components/Search";
+import SetLanguage from "./components/SetLanguage";
 
 import mapboxgl from 'mapbox-gl';
+
 
 mapboxgl.accessToken = 'pk.eyJ1IjoianVzdGRhbG8iLCJhIjoiY2tvcXV5bGRiMHo0bDJ5bnVvZGZ2OG9tbiJ9.Ipu3ac3wlDlWxP_N72IWjg';
 
 const moment = require('moment-timezone');
 let map;
+
 
 class App extends React.PureComponent {
 
@@ -57,8 +59,7 @@ class App extends React.PureComponent {
     let city;
     let degrees = 'metric';
     let language = 'en';
-    let lat;
-    let lon;
+ 
 
 
     fetch(`https://ipinfo.io/json?token=f642613f374b09`)
@@ -168,8 +169,8 @@ class App extends React.PureComponent {
 
 
 
-  GettingWeather = (e) => {
-    e.preventDefault();
+  GettingWeather = () => {
+
     let degrees = 'metric';
     let language = 'en';
     if (localStorage.getItem('degress') != null) {
@@ -179,9 +180,9 @@ class App extends React.PureComponent {
     if (localStorage.getItem('language') != null) {
       language = localStorage.getItem('language');
     }
+    let city = City;
 
-    let city = e.target.elements.city.value;
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=${language}&appid=a22a0229c938f98549e173a33c5ee9cc&units=${degrees}`)
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${City}&lang=${language}&appid=a22a0229c938f98549e173a33c5ee9cc&units=${degrees}`)
       .then(response => response.json())
       .then(data => {
         const Icon = document.querySelector('.weather--icon');
@@ -199,8 +200,6 @@ class App extends React.PureComponent {
           lon: data.coord.lon,
           lat: data.coord.lat,
         }));
-        let lat = this.state.lat;
-        let lon = this.state.lon;
 
         fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.state.lat}&lon=${this.state.lon}&exclude=current,hourly,minutely,alerts&units=${degrees}&appid=a22a0229c938f98549e173a33c5ee9cc`)
           .then(response => response.json())
@@ -210,7 +209,7 @@ class App extends React.PureComponent {
               firstForecastTemp: data.daily[1].temp.day.toFixed(0),
               secondForecastTemp: data.daily[2].temp.day.toFixed(0),
               thirdForecastTemp: data.daily[3].temp.day.toFixed(0),
-              firstForecastDay: new Date(data.daily[1].dt * 1000).toLocaleString("en-us", {
+              firstForecastDay: new Date(data.daily[1].dt * 1000).toLocaleString("ru-RU", {
                 weekday: "long"
               }),
               secondForecastDay: new Date(data.daily[2].dt * 1000).toLocaleString("en-us", {
@@ -234,13 +233,11 @@ class App extends React.PureComponent {
       .catch(error => console.log(error))
 
 
-    
+
 
   }
 
-  foiceSearch = (e) => {
-    
-  }
+
 
 
   render() {
@@ -250,17 +247,20 @@ class App extends React.PureComponent {
         <div className="button__cluster">
           <div className="button__cluster__left">
             <BackGroundImage ImageMethod={this.GetNewImage} />
+            <SetLanguage />
             <div className="degrees__buttons">
               <button className="button__F" onClick={e => {
                 localStorage.setItem('degress', 'imperial');
-
+                this.forceUpdate();
               }}>°F</button>
               <button className="button__C" onClick={e => { localStorage.setItem('degress', 'metric') }}>°C</button>
             </div>
           </div>
           <div className="button__cluster__right">
-            <Search GetCity={this.GettingWeather} />
+
+            <VoiceSearch GetCity={this.GettingWeather} />
           </div>
+
         </div>
         <div className="main">
           <div className="weather">
