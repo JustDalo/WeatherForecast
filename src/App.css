@@ -158,6 +158,9 @@ button {
     
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
 }
 
 .search__form {
@@ -242,9 +245,6 @@ button {
     font-size: 100px;
 }
 
-.weather__section {
-    
-}
 
 .weather__Forecast__section {
     display: flex;
@@ -256,20 +256,10 @@ button {
 
 .weather__forecast {
     font-family: 'Montserrat', sans-serif;
-    margin-left: 50px;
+   
 }
 
-.weatherForecast__day {
-    
-    
-}
-.weather__forecast:first-child {
-    
-}
 
-.weather__forecast:last-child {
-    margin-right: 50px;
-}
 
 .weatherForecast__info {
     display: flex;
@@ -305,6 +295,16 @@ button {
     height:100%;
 }
 
+.coords {
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+}
 
+.overlay {
+    box-sizing: content-box;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2); 
+  }
 
 

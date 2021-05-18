@@ -7,7 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   transition: background-image 1s ease-in-out;
   color: white;
-  text-shadow: #000 2px 3px 4px;
+  
 }
 
 code {

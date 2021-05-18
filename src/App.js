@@ -8,12 +8,12 @@ import CurrDate from "./components/Date";
 import Map from "./components/Map";
 import WeatherForecast from "./components/WeatherForecast";
 
-
-import csc from 'country-state-city';
 import mapboxgl from 'mapbox-gl';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoianVzdGRhbG8iLCJhIjoiY2tvcXV5bGRiMHo0bDJ5bnVvZGZ2OG9tbiJ9.Ipu3ac3wlDlWxP_N72IWjg';
 
+const moment = require('moment-timezone');
+let map;
 
 class App extends React.PureComponent {
 
@@ -26,12 +26,14 @@ class App extends React.PureComponent {
       feelsLike: undefined,
       wind: undefined,
       humidity: undefined,
+      degrees: undefined,
 
       country: undefined,
       city: undefined,
       lat: undefined,
       lon: undefined,
-      zoom: 30,
+      map: undefined,
+      zoom: 1,
 
       timezone: undefined,
       time: undefined,
@@ -91,6 +93,7 @@ class App extends React.PureComponent {
               humidity: data.main.humidity,
               lon: data.coord.lon,
               lat: data.coord.lat,
+
             });
             lat = this.state.lat;
             lon = this.state.lon;
@@ -119,20 +122,17 @@ class App extends React.PureComponent {
               })
 
             { this.GetNewImage() }
-            const map = new mapboxgl.Map({
+            map = new mapboxgl.Map({
               container: this.mapContainer.current,
-              style: 'mapbox://styles/mapbox/streets-v8',
+              style: 'mapbox://styles/mapbox/dark-v10',
               center: [this.state.lon, this.state.lat],
-              zoom: 8
+              zoom: 11
             });
-
-
-
           })
 
 
 
-        { this.GetDate() };
+        { this.GetDate() }
 
 
       });
@@ -143,7 +143,7 @@ class App extends React.PureComponent {
   }
 
   GetDate = () => {
-    let moment = require('moment-timezone');
+
     this.setState({
       day: moment().tz(this.state.timezone).format('dddd'),
       month: moment().tz(this.state.timezone).format('MMMM Do'),
@@ -154,29 +154,16 @@ class App extends React.PureComponent {
 
 
   GetNewImage = () => {
-    fetch(`https://source.unsplash.com/1920x1080/?${this.state.weatherDescription}`)
+    let scrollHeight = Math.max(
+      document.body.scrollHeight, document.documentElement.scrollHeight,
+      document.body.offsetHeight, document.documentElement.offsetHeight,
+      document.body.clientHeight, document.documentElement.clientHeight
+    );
+    fetch(`https://source.unsplash.com/1920x${scrollHeight}/?${this.state.weatherDescription}`)
       .then((response) => {
         document.body.style = `background-image: url(${response.url});`;
       })
       .catch(error => console.log(error));
-  }
-
-  GetWeatherForecast = () => {
-    fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=38.7267&lon=-9.1403&exclude=current,hourly,minutely,alerts&units=metric&appid=a22a0229c938f98549e173a33c5ee9cc`)
-      .then(function (response) {
-        response.json().then(function (data) {
-          var fday = "";
-          data.daily.forEach((value, index) => {
-            if (index > 0) {
-              var dayname = new Date(value.dt / 1000)
-              var icon = value.weather[0].icon;
-              var temp = value.temp.day.toFixed(0);
-
-
-            }
-          });
-        });
-      })
   }
 
 
@@ -192,6 +179,7 @@ class App extends React.PureComponent {
     if (localStorage.getItem('language') != null) {
       language = localStorage.getItem('language');
     }
+
     let city = e.target.elements.city.value;
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&lang=${language}&appid=a22a0229c938f98549e173a33c5ee9cc&units=${degrees}`)
       .then(response => response.json())
@@ -200,12 +188,6 @@ class App extends React.PureComponent {
         Icon.className = 'weather--icon owf';
         Icon.classList.add(`owf-${data.weather[0].id}`);
 
-
-        let newTimezone = data.timezone;
-
-        let moment = require('moment-timezone');
-        let day = moment().tz(newTimezone).format('MMMM Do')
-        console.log(day);
         this.setState(({
           country: data.sys.country,
           city: city,
@@ -219,30 +201,62 @@ class App extends React.PureComponent {
         }));
         let lat = this.state.lat;
         let lon = this.state.lon;
-        console.log(lat);
-        console.log(lon);
-        /*const map = new mapboxgl.Map({
-          container: this.mapContainer.current,
-          style: 'mapbox://styles/mapbox/streets-v9',
-          center: [this.state.lon, this.state.lat],
-          zoom: 8
-        });*/
 
+        fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.state.lat}&lon=${this.state.lon}&exclude=current,hourly,minutely,alerts&units=${degrees}&appid=a22a0229c938f98549e173a33c5ee9cc`)
+          .then(response => response.json())
+          .then(data => {
+            this.setState({
+              timezone: data.timezone,
+              firstForecastTemp: data.daily[1].temp.day.toFixed(0),
+              secondForecastTemp: data.daily[2].temp.day.toFixed(0),
+              thirdForecastTemp: data.daily[3].temp.day.toFixed(0),
+              firstForecastDay: new Date(data.daily[1].dt * 1000).toLocaleString("en-us", {
+                weekday: "long"
+              }),
+              secondForecastDay: new Date(data.daily[2].dt * 1000).toLocaleString("en-us", {
+                weekday: "long"
+              }),
+              thirdForecastDay: new Date(data.daily[3].dt * 1000).toLocaleString("en-us", {
+                weekday: "long"
+              }),
+              firstForecastIcon: "http://openweathermap.org/img/w/" + data.daily[1].weather[0].icon + ".png",
+              secondForecastIcon: "http://openweathermap.org/img/w/" + data.daily[2].weather[0].icon + ".png",
+              thirdForecastIcon: "http://openweathermap.org/img/w/" + data.daily[3].weather[0].icon + ".png",
+
+            })
+          })
+        { this.GetDate() }
+
+        map.jumpTo({ 'center': [this.state.lon, this.state.lat], 'zoom': 11 });
 
 
       })
       .catch(error => console.log(error))
+
+
+    
+
+  }
+
+  foiceSearch = (e) => {
+    
   }
 
 
   render() {
     return (
-      <div>
-        {this.GetWeatherForecast()}
+      <div className="overlay">
+
         <div className="button__cluster">
           <div className="button__cluster__left">
             <BackGroundImage ImageMethod={this.GetNewImage} />
-            <Degrees />
+            <div className="degrees__buttons">
+              <button className="button__F" onClick={e => {
+                localStorage.setItem('degress', 'imperial');
+
+              }}>°F</button>
+              <button className="button__C" onClick={e => { localStorage.setItem('degress', 'metric') }}>°C</button>
+            </div>
           </div>
           <div className="button__cluster__right">
             <Search GetCity={this.GettingWeather} />
@@ -288,6 +302,7 @@ class App extends React.PureComponent {
 
           <div className="map__container">
             <div ref={this.mapContainer} className="map" />
+            <div className="coords">Latitude: {this.state.lat} - Longtitude: {this.state.lon}</div>
           </div>
         </div>
 
