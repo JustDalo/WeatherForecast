@@ -86,8 +86,9 @@ class App extends React.PureComponent {
 
         fetch(`https://api.openweathermap.org/data/2.5/weather?q=${currCity}&lang=${currLanguage}&appid=a9a3a62789de80865407c0452e9d1c27&units=${degrees}`)
           .then(response => response.json())
-          .then(data => {
+          .then((data) => {
             // const Icon = document.querySelector('.weather--icon');
+            // console.log(data.weather[0].icon);
             // Icon.className = 'weather--icon owf';
             // Icon.classList.add(`owf-${data.weather[0].id}`);
 
@@ -141,12 +142,14 @@ class App extends React.PureComponent {
                   })
                 }
               )
+          },
+            (error) => {
+              this.setState({
+                isLoaded: true,
+                error
+              })
+            })
 
-
-            //   this.GetNewImage();
-
-          })
-          .catch(error => console.log(error));
 
 
         this.GetNewImage();
@@ -167,19 +170,53 @@ class App extends React.PureComponent {
   GetLanguage = (e) => {
     let lan = e.target.value;
     moment.locale(lan);
+
     localStorage.setItem('language', lan);
-    this.setState(state => ({
-      language: lan,
-    }))
+
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.city}&lang=${lan}&appid=a9a3a62789de80865407c0452e9d1c27&units=${this.state.degrees}`)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          currWeatherData: data,
+          language: lan,
+        })
+
+
+      })
+      .catch(error => console.log(error))
   }
 
   GetDegrees = (e) => {
-    
     let deg = e.target.value;
+    let currWeather;
     localStorage.setItem('degrees', deg);
-    this.setState(state => ({
-      degrees: deg,
-    }))
+
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.city}&lang=${this.state.language}&appid=a9a3a62789de80865407c0452e9d1c27&units=${deg}`)
+      .then(response => response.json())
+      .then(data => {
+        currWeather = data;
+  
+        fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.state.lat}&lon=${this.state.lon}&exclude=current,hourly,minutely,alerts&units=${deg}&appid=a9a3a62789de80865407c0452e9d1c27`)
+          .then(response => response.json())
+          .then(data => {
+              this.setState({
+
+                currWeatherData: currWeather,
+
+            
+
+                forecastfirstDay: data.daily[1],
+                forecastSecondDay: data.daily[2],
+                forecastThirdDay: data.daily[3],
+
+                degrees: deg,
+              })
+            }
+            
+          )
+      }) 
+      .catch (error => console.log(error))
+
   }
 
 
@@ -194,6 +231,8 @@ class App extends React.PureComponent {
         document.body.style = `background-image: url(${response.url});`;
       })
       .catch(error => console.log(error));
+
+
   }
 
 
@@ -209,7 +248,7 @@ class App extends React.PureComponent {
     if (localStorage.getItem('language') != null) {
       language = localStorage.getItem('language');
     }
-  
+
     let currLat;
     let currLon;
     let currCountry;
@@ -293,7 +332,7 @@ class App extends React.PureComponent {
             </div>
             <div className="button__cluster__right">
 
-              <VoiceSearch 
+              <VoiceSearch
                 GetCity={this.GettingWeather}
                 language={this.state.language} />
             </div>
@@ -303,6 +342,7 @@ class App extends React.PureComponent {
             <div className="weather">
               <div className="weather__section">
                 <CurrDate
+                  language={this.state.language}
                   country={this.state.country}
                   city={this.state.city}
                   time={this.state.time}
