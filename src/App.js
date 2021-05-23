@@ -86,63 +86,59 @@ class App extends React.PureComponent {
 
         fetch(`https://api.openweathermap.org/data/2.5/weather?q=${currCity}&lang=${currLanguage}&appid=a9a3a62789de80865407c0452e9d1c27&units=${degrees}`)
           .then(response => response.json())
-          .then((data) => {
-            // const Icon = document.querySelector('.weather--icon');
-            // console.log(data.weather[0].icon);
-            // Icon.className = 'weather--icon owf';
-            // Icon.classList.add(`owf-${data.weather[0].id}`);
+          .then(
+            (data) => {
+              currWeather = data;
+              currCountry = data.sys.country
+              currLat = data.coord.lat;
+              currLon = data.coord.lon;
 
-            currWeather = data;
-            currCountry = data.sys.country
-            currLat = data.coord.lat;
-            currLon = data.coord.lon;
+              console.log('loop');
 
-            console.log('loop');
+              fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${currLat}&lon=${currLon}&exclude=current,hourly,minutely,alerts&units=${degrees}&appid=a9a3a62789de80865407c0452e9d1c27`)
+                .then(response => response.json())
+                .then(
+                  (data) => {
+                    this.setState({
+                      isLoaded: true,
+                      currWeatherData: currWeather,
 
-            fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${currLat}&lon=${currLon}&exclude=current,hourly,minutely,alerts&units=${degrees}&appid=a9a3a62789de80865407c0452e9d1c27`)
-              .then(response => response.json())
-              .then(
-                (data) => {
-                  this.setState({
-                    isLoaded: true,
-                    currWeatherData: currWeather,
+                      city: currCity,
+                      country: currCountry,
+                      timezone: currTimezone,
 
-                    city: currCity,
-                    country: currCountry,
-                    timezone: currTimezone,
+                      lat: currLat,
+                      lon: currLon,
 
-                    lat: currLat,
-                    lon: currLon,
+                      forecastfirstDay: data.daily[1],
+                      forecastSecondDay: data.daily[2],
+                      forecastThirdDay: data.daily[3],
 
-                    forecastfirstDay: data.daily[1],
-                    forecastSecondDay: data.daily[2],
-                    forecastThirdDay: data.daily[3],
+                      language: currLanguage,
 
-                    language: currLanguage,
+                    })
 
-                  })
+                    this.interval = setInterval(() => this.setState({
+                      day: moment().tz(this.state.timezone).format('dddd'),
+                      month: moment().tz(this.state.timezone).format('MMMM Do'),
+                      time: moment().tz(this.state.timezone).format('h:mm:ss a'),
+                    }), 1000);
 
-                  this.interval = setInterval(() => this.setState({
-                    day: moment().tz(this.state.timezone).format('dddd'),
-                    month: moment().tz(this.state.timezone).format('MMMM Do'),
-                    time: moment().tz(this.state.timezone).format('h:mm:ss a'),
-                  }), 1000);
-
-                  map = new mapboxgl.Map({
-                    container: this.mapContainer.current,
-                    style: 'mapbox://styles/mapbox/dark-v10',
-                    center: [this.state.lon, this.state.lat],
-                    zoom: 11
-                  });
-                },
-                (error) => {
-                  this.setState({
-                    isLoaded: true,
-                    error
-                  })
-                }
-              )
-          },
+                    map = new mapboxgl.Map({
+                      container: this.mapContainer.current,
+                      style: 'mapbox://styles/mapbox/dark-v10',
+                      center: [this.state.lon, this.state.lat],
+                      zoom: 11
+                    });
+                  },
+                  (error) => {
+                    this.setState({
+                      isLoaded: true,
+                      error
+                    })
+                  }
+                )
+            },
             (error) => {
               this.setState({
                 isLoaded: true,
@@ -163,9 +159,6 @@ class App extends React.PureComponent {
     clearInterval(this.interval);
   }
 
-  componentDidUpdate() {
-
-  }
 
   GetLanguage = (e) => {
     let lan = e.target.value;
@@ -195,27 +188,27 @@ class App extends React.PureComponent {
       .then(response => response.json())
       .then(data => {
         currWeather = data;
-  
+
         fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${this.state.lat}&lon=${this.state.lon}&exclude=current,hourly,minutely,alerts&units=${deg}&appid=a9a3a62789de80865407c0452e9d1c27`)
           .then(response => response.json())
           .then(data => {
-              this.setState({
+            this.setState({
 
-                currWeatherData: currWeather,
+              currWeatherData: currWeather,
 
-            
 
-                forecastfirstDay: data.daily[1],
-                forecastSecondDay: data.daily[2],
-                forecastThirdDay: data.daily[3],
 
-                degrees: deg,
-              })
-            }
-            
+              forecastfirstDay: data.daily[1],
+              forecastSecondDay: data.daily[2],
+              forecastThirdDay: data.daily[3],
+
+              degrees: deg,
+            })
+          }
+
           )
-      }) 
-      .catch (error => console.log(error))
+      })
+      .catch(error => console.log(error))
 
   }
 
@@ -258,9 +251,6 @@ class App extends React.PureComponent {
       .then(response => response.json())
       .then(data => {
         currWeather = data;
-        const Icon = document.querySelector('.weather--icon');
-        Icon.className = 'weather--icon owf';
-        Icon.classList.add(`owf-${data.weather[0].id}`);
 
         currCountry = data.sys.country;
 

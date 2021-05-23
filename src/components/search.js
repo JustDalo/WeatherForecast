@@ -45,18 +45,15 @@ export function VoiceSearch(props) {
     }
 
     const updateInputValue = (evt) => {
-        setInputText(evt.target.value);
+        setInputText(evt);
     }
 
     return (
         <div className="microphone-wrapper">
             <div className="search__form">
-
-                <input className="input__search" type="search" onChange={evt => updateInputValue(evt)} name="city" required placeholder={props.language === 'en' ? 'Search city' : 'Найти город'}></input>
+                <input className="input__search" type="search" onChange={evt => updateInputValue(evt.target.value)} name="city" required placeholder={props.language === 'en' ? 'Search city' : 'Найти город'}></input>
                 <button className="button__micro" onClick={handleListing} style={{backgroundColor: color}}></button>
                 <button id="button__search" onClick={handleClick}>{props.language === 'en' ? 'SEARCH' : 'ПОИСК'}</button>
-                
-
             </div>
            
         </div>
