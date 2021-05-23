@@ -130,6 +130,7 @@ class App extends React.PureComponent {
                       center: [this.state.lon, this.state.lat],
                       zoom: 11
                     });
+                    this.GetNewImage();
                   },
                   (error) => {
                     this.setState({
@@ -148,7 +149,7 @@ class App extends React.PureComponent {
 
 
 
-        this.GetNewImage();
+        
 
 
 
@@ -219,7 +220,7 @@ class App extends React.PureComponent {
       document.body.offsetHeight, document.documentElement.offsetHeight,
       document.body.clientHeight, document.documentElement.clientHeight
     );
-    fetch(`https://source.unsplash.com/1920x${scrollHeight}/?$fog`)
+    fetch(`https://source.unsplash.com/1920x${scrollHeight}/?$${this.state.currWeatherData.weather[0].description}`)
       .then((response) => {
         document.body.style = `background-image: url(${response.url});`;
       })
