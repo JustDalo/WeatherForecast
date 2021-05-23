@@ -74,55 +74,34 @@ button {
 }
 
 
-.button__language__manu {
+.language__buttons {
+    display: flex;
+
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+
     margin-right: 20px;
-    position: relative;
-    display: inline-block;
+}
+.button__en {
+    font-size: 15px;
+
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;  
 }
 
-.button__drop__menu {
-    color: white;
-    padding: 16px;
-    border: none;
-    cursor: pointer;
+.button__ru {
+    font-size: 15px;
+
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;  
 }
 
-.language__arrow {
-    background: url(img/arrow-down.svg) 50% no-repeat;
+.button__ru:hover {
+    background-color: #000;
 }
 
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-
-    overflow: auto;
-    
-    border-radius: 0px;
-    right: 0;
-    z-index: 1;
-}
-
-.button__language {
-    border-radius: 0px;
-}
-
-.button__language:last-child {
-    border-bottom-left-radius: .5rem;
-    border-bottom-right-radius: .5rem;
-}
-
-.dropdown-content a {
-    color: black;
-    
-    text-decoration: none;
-    display: block;
-}
-
-.button__language__manu a:hover {background-color: #ddd;}
-
-.show {
-    display: block;
+.button__en:hover {
+    background-color: #000;
 }
 
 .degrees__buttons {
@@ -191,8 +170,8 @@ button {
 }
 
 .button__micro {
-    border-top: .1rem solid rgba(180, 184, 197, .7);
-    border-bottom: .1rem solid rgba(180, 184, 197, .7);
+    border-top: 1px solid rgba(180, 184, 197, .7);
+    border-bottom: 1px solid rgba(180, 184, 197, .7);
     background: rgba(76, 82, 85, .7) url(img/microphone.svg) no-repeat center;
     border-radius: 0px;
 }
@@ -203,7 +182,7 @@ button {
     border-bottom-left-radius: 0px;  
 }
 
-#button__micro:hover {
+.button__micro:hover {
     background: #000 url(img/microphone.svg) no-repeat center;
 }
 
