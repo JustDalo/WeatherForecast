@@ -11,7 +11,7 @@ export function VoiceSearch(props) {
     const [inputText, setInputText] = useState('');
     const [color, setColor] = useState('rgba(76, 82, 85, .7)');
 
-   
+
     if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
         return (
             <div className="mircophone-container">
@@ -31,14 +31,15 @@ export function VoiceSearch(props) {
         else {
             setIsListening(true);
             setColor('black');
-            
+
             SpeechRecognition.startListening({
                 continuous: true,
             });
         }
     };
 
-    const handleClick = () => {
+    const handleClick = (event) => {
+        event.preventDefault()
         City = inputText;
         console.log(inputText);
         props.GetCity();
@@ -51,11 +52,13 @@ export function VoiceSearch(props) {
     return (
         <div className="microphone-wrapper">
             <div className="search__form">
-                <input className="input__search" type="search" onChange={evt => updateInputValue(evt.target.value)} name="city" required placeholder={props.language === 'en' ? 'Search city' : 'Найти город'}></input>
-                <button className="button__micro" onClick={handleListing} style={{backgroundColor: color}}></button>
+                <form className="input__form" onSubmit={e => handleClick(e)}>
+                    <input className="input__search" type="search" onChange={evt => updateInputValue(evt.target.value)} name="city" required placeholder={props.language === 'en' ? 'Search city' : 'Найти город'}></input>
+                </form>
+                <button className="button__micro" onClick={handleListing} style={{ backgroundColor: color }}></button>
                 <button id="button__search" onClick={handleClick}>{props.language === 'en' ? 'SEARCH' : 'ПОИСК'}</button>
             </div>
-           
+
         </div>
     );
 }

@@ -10,13 +10,23 @@ import { City, VoiceSearch } from "./components/Search";
 import mapboxgl from 'mapbox-gl';
 import 'moment/locale/ru';
 
+import bruh from './Music/SkizzyMars-Numb.mp3';
+import { Howl } from 'howler'
+
+import { AiFillCustomerService } from 'react-icons/ai'
+
+
 mapboxgl.accessToken = 'pk.eyJ1IjoianVzdGRhbG8iLCJhIjoiY2tvcXV5bGRiMHo0bDJ5bnVvZGZ2OG9tbiJ9.Ipu3ac3wlDlWxP_N72IWjg';
 
 const moment = require('moment-timezone');
 let map;
 
 
+
+
 class App extends React.PureComponent {
+
+
   constructor(props) {
     super(props);
     this.state = {
@@ -40,6 +50,12 @@ class App extends React.PureComponent {
       forecastfirstDay: [],
       forecastSecondDay: [],
       forecastThirdDay: [],
+
+      music: true,
+      sound: new Howl({
+        src: [bruh],
+        loop: true
+      }),
 
       error: null,
       isLoaded: false,
@@ -149,7 +165,7 @@ class App extends React.PureComponent {
 
 
 
-        
+
 
 
 
@@ -210,6 +226,21 @@ class App extends React.PureComponent {
           )
       })
       .catch(error => console.log(error))
+  }
+
+  SoundPlay = () => {
+    this.setState({
+      music: !this.state.music,
+    })
+
+    if (this.state.music) {
+      this.state.sound.play()
+    }
+    else {
+      console.log(this.state.music);
+      this.state.sound.stop()
+    }
+
 
   }
 
@@ -220,7 +251,7 @@ class App extends React.PureComponent {
       document.body.offsetHeight, document.documentElement.offsetHeight,
       document.body.clientHeight, document.documentElement.clientHeight
     );
-    fetch(`https://source.unsplash.com/1920x${scrollHeight}/?$${this.state.currWeatherData.weather[0].description}`)
+    fetch(`https://source.unsplash.com/1920x1080/?$${this.state.currWeatherData.weather[0].description}`)
       .then((response) => {
         document.body.style = `background-image: url(${response.url});`;
       })
@@ -235,8 +266,8 @@ class App extends React.PureComponent {
 
     let degrees = 'metric';
     let language = 'en';
-    if (localStorage.getItem('degress') != null) {
-      degrees = localStorage.getItem('degress');
+    if (localStorage.getItem('degrees') != null) {
+      degrees = localStorage.getItem('degrees');
     }
 
     if (localStorage.getItem('language') != null) {
@@ -298,6 +329,7 @@ class App extends React.PureComponent {
 
 
   render() {
+
     const { error, isLoaded } = this.state;
 
     if (error) {
@@ -320,6 +352,11 @@ class App extends React.PureComponent {
                 <button className="button__F" value="imperial" onClick={e => this.GetDegrees(e)}>°F</button>
                 <button className="button__C" value="metric" onClick={e => this.GetDegrees(e)}>°C</button>
               </div>
+
+              <button className="button__music" onClick={() => this.SoundPlay()}>
+                <AiFillCustomerService className="music__icon" />
+              </button>
+
             </div>
             <div className="button__cluster__right">
 
@@ -364,7 +401,7 @@ class App extends React.PureComponent {
 
             <div className="map__container">
               <div ref={this.mapContainer} className="map" />
-              <div className="coords">{this.state.language === 'en' ? 'Latitude' : 'Широта'}: {this.state.lat} - {this.state.language === 'en' ? 'Longtitude' : 'Долгота'}: {this.state.lon}</div>
+              <div className="coords">{this.state.language === 'en' ? 'Latitude' : 'Широта'}: {this.state.lat.toFixed(2)} - {this.state.language === 'en' ? 'Longtitude' : 'Долгота'}: {this.state.lon.toFixed(2)}</div>
             </div>
           </div>
 

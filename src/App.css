@@ -1,11 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&display=swap');
-
 .button__cluster {
-	font-family: 'Montserrat', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     display: flex;
     flex-wrap: wrap;
-
     margin-bottom: 30px;
 }
 
@@ -15,7 +13,6 @@
     width: 50%;
     top: 0;
     left: 0;
-    
 }
 
 button {
@@ -34,16 +31,12 @@ button {
     color: #fff;
     background-color: rgba(180, 184, 187, .7);
     text-transform: uppercase;
-
     -webkit-appearance: button;
-
     -webkit-transition: all .2s;
     transition: all 1s;
-
     border: 0;
     outline: 0;
     cursor: pointer;
-
     overflow: visible;
 }
 
@@ -60,7 +53,6 @@ button {
     width: 25px;
     height: 25px;
     background: url(img/spinner.svg) 50% no-repeat;
-
 }
 
 .spinner:hover {
@@ -73,27 +65,23 @@ button {
     }
 }
 
-
 .language__buttons {
     display: flex;
-
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
-
     margin-right: 20px;
 }
+
 .button__en {
     font-size: 15px;
-
     border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;  
+    border-bottom-right-radius: 0px;
 }
 
 .button__ru {
     font-size: 15px;
-
     border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;  
+    border-bottom-left-radius: 0px;
 }
 
 .button__ru:hover {
@@ -106,22 +94,21 @@ button {
 
 .degrees__buttons {
     display: flex;
-
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
+    margin-right: 20px;
 }
+
 .button__F {
     font-size: 15px;
-
     border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;  
+    border-bottom-right-radius: 0px;
 }
 
 .button__C {
     font-size: 15px;
-
     border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;  
+    border-bottom-left-radius: 0px;
 }
 
 .button__C:hover {
@@ -132,9 +119,17 @@ button {
     background-color: #000;
 }
 
+.button__music:hover {
+    background-color: #000;
+}
+
+.music__icon {
+    height: 20px;
+    width: 20px;
+}
+
 .button__cluster__right {
     width: 50%;
-    
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -143,7 +138,6 @@ button {
 }
 
 .search__form {
-    
     display: flex;
 }
 
@@ -152,18 +146,17 @@ button {
     border: .1rem solid rgba(180, 184, 197, .7);
     border-radius: .5rem;
     border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px; 
-
+    border-bottom-right-radius: 0px;
     border-right: 0px;
-
     padding: 0 1.5rem;
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
     font-size: 1rem;
     color: #fff;
-
     outline: none;
+    height: 50px;
 }
+
 
 .input__search::-webkit-input-placeholder {
     color: #fff;
@@ -179,13 +172,12 @@ button {
 #button__search {
     width: 9rem;
     border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;  
+    border-bottom-left-radius: 0px;
 }
 
 .button__micro:hover {
     background: #000 url(img/microphone.svg) no-repeat center;
 }
-
 
 #button__search:hover {
     background-color: #000;
@@ -224,21 +216,16 @@ button {
     font-size: 100px;
 }
 
-
 .weather__Forecast__section {
     display: flex;
     flex-wrap: wrap;
     font-size: 40px;
-  
     justify-content: space-between;
 }
 
 .weather__forecast {
     font-family: 'Montserrat', sans-serif;
-   
 }
-
-
 
 .weatherForecast__info {
     display: flex;
@@ -250,28 +237,23 @@ button {
     font-weight: 700;
 }
 
-
 .main {
     display: flex;
-    
 }
 
 .weather {
     width: 60%;
-    
 }
 
 .map__container {
-    width: 40%; 
-    border: 2px solid #000; 
+    width: 40%;
     margin: 120px 80px;
-    border-radius: 10px;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 88%, 86% 88%, 86% 100%, 62% 89%, 0 89%);
 }
 
 .map {
-    border-radius: 10px;
     width: 100%;
-    height:100%;
+    height: 100%;
 }
 
 .coords {
@@ -280,13 +262,10 @@ button {
 }
 
 .overlay {
-
     position: absolute;
-    width: 100%; height:100%;
-    top:0; left:0;
-    background:rgba(0,0,0,0.6);
-   
-
-  }
-
-
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.3);
+}
