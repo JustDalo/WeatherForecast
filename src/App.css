@@ -1,4 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+body:before{
+    
+    content: " ";
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
 .button__cluster {
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
@@ -259,13 +272,4 @@ button {
 .coords {
     font-family: 'Montserrat', sans-serif;
     text-align: center;
-}
-
-.overlay {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: rgba(0, 0, 0, 0.3);
 }

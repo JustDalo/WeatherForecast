@@ -213,8 +213,6 @@ class App extends React.PureComponent {
 
               currWeatherData: currWeather,
 
-
-
               forecastfirstDay: data.daily[1],
               forecastSecondDay: data.daily[2],
               forecastThirdDay: data.daily[3],
@@ -246,11 +244,6 @@ class App extends React.PureComponent {
 
 
   GetNewImage = () => {
-    let scrollHeight = Math.max(
-      document.body.scrollHeight, document.documentElement.scrollHeight,
-      document.body.offsetHeight, document.documentElement.offsetHeight,
-      document.body.clientHeight, document.documentElement.clientHeight
-    );
     fetch(`https://source.unsplash.com/1920x1080/?$${this.state.currWeatherData.weather[0].description}`)
       .then((response) => {
         document.body.style = `background-image: url(${response.url});`;
@@ -338,8 +331,8 @@ class App extends React.PureComponent {
       return (<div>Loading...</div>);
     } else {
       return (
-        <div className="overlay">
-
+        <div>
+          
           <div className="button__cluster">
             <div className="button__cluster__left">
               <BackGroundImage ImageMethod={this.GetNewImage} />
@@ -406,7 +399,7 @@ class App extends React.PureComponent {
           </div>
 
 
-
+          
 
         </div>
       );
